@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 using std::vector;
 using std::string;
@@ -11,7 +10,6 @@ vector<string> divideInputByIndex(const string& input, int index)
   vector<string> pieces;
   for (int i = 0; i < input.length(); i += index)
     pieces.push_back(input.substr(i , index));
-
   std::cout << "Index " << index << " : "; // @test
   for (int i = 0; i < pieces.size(); i++)  // @test
     std::cout << pieces.at(i) << " ";      // @test
@@ -21,7 +19,6 @@ vector<string> divideInputByIndex(const string& input, int index)
 int getCompressedCapacity(const string& input, int index)
 {
   vector<string> pieces = divideInputByIndex(input, index);
-
   int compressed_capacity = 0;
   int i, j;
   for (i = 0; i < pieces.size(); i += j)
