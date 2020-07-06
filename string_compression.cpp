@@ -1,78 +1,56 @@
 #include <iostream>
+#include <string>
 #include <vector>
-#include <map>
 #include <algorithm>
-
 
 using std::vector;
 using std::string;
-using std::multimap;
 
-vector<string> getPiecesVector(const vector<char>& input_chars, int index)
+vector<string> divideInputByIndex(const string& input, int index)
 {
   vector<string> pieces;
-  int i = 0;
-  while (i + index < input_chars.size())
-  {
-    pieces.push_back(string(input_chars.begin() + i, input_chars.begin() + i + index));
-    i += index;
-  }
-  pieces.push_back(string(input_chars.begin() + i, input_chars.end()));
+  for (int i = 0; i < input.length(); i += index)
+    pieces.push_back(input.substr(i , index));
+
+  std::cout << "Index " << index << " : "; // @test
+  for (int i = 0; i < pieces.size(); i++)  // @test
+    std::cout << pieces.at(i) << " ";      // @test
   return pieces;
 }
 
-multimap<string, int> getCountMapVector(const vector<string>& pieces)
+int getCompressedCapacity(const string& input, int index)
 {
-  multimap<string, int> count_map;
-  for (int j = 0; j < pieces.size();)
-  {
-    int k = 0;
-    while (j + k < pieces.size())
-    {
-      if (pieces.at(j) != pieces.at(j + k))
-        break;
-      k++;
-    }
-    count_map.insert({pieces.at(j), k});
-    j = j + k;
-  }
-  return count_map;
-}
+  vector<string> pieces = divideInputByIndex(input, index);
 
-string compressString(const vector<char>& input_chars, int index)
-{
-  vector<string> pieces = getPiecesVector(input_chars, index);
-  multimap<string, int> count_map = getCountMapVector(pieces);
-  vector<string> compressed_strings;
-  string compressed_string;
-  for(const auto& element : count_map)
+  int compressed_capacity = 0;
+  int i, j;
+  for (i = 0; i < pieces.size(); i += j)
   {
-    if (element.second != 1)
-      compressed_string += std::to_string(element.second);
-    compressed_string += element.first;
+    compressed_capacity += pieces.at(i).length();
+    for (j = 1; i + j < pieces.size(); j++)
+    {
+      if (pieces.at(i) != pieces.at(i + j))
+        break;
+    }
+    if (j != 1)
+      compressed_capacity += std::to_string(j).length();
   }
-  compressed_strings.push_back(compressed_string);
-  string minimal_compressed_string(input_chars.begin(), input_chars.end());
-  for (auto compressed_string : compressed_strings)
-  {
-    if (minimal_compressed_string.size() > compressed_string.size())
-      minimal_compressed_string = compressed_string;
-  }
-  return minimal_compressed_string;
+  std::cout << " Capacity : " << compressed_capacity; // @test
+  std::cout << std::endl;                             // @test
+  return compressed_capacity;
 }
 
 int main()
 {
-  string input_string;
-  std::cin >> input_string;
-  vector<char> input_chars(input_string.begin(), input_string.end());
-  vector<string> output_strings;
-  for (int i = 1; i <= input_chars.size()/2; i++)
-    output_strings.push_back(compressString(input_chars, i));
-  string minimal_string = input_string;
-  for (auto output_string : output_strings)
-    if (minimal_string.size() > output_string.size())
-      minimal_string = output_string;
-  std::cout << minimal_string.size() << std::endl;
+  string input;
+  std::cin >> input;
+  int output = input.length();
+  for (int i = 1; i <= input.length()/2; i++)
+  {
+    int result = getCompressedCapacity(input, i);
+    if (output > result)
+      output = result;
+  }
+  std::cout << output << std::endl;
   return 0;
 }
