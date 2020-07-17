@@ -16,7 +16,7 @@
 ## 4. 가사 검색 [▶](https://github.com/J-HM/Study_KaKao-Blind-Recruitment/blob/master/lyric_search.cpp)
 
 <br/><br/>
-## 5. 기둥과 보 설치 [▶](https://github.com/J-HM/Study_KaKao-Blind-Recruitment/blob/master/parenthesis_transformation.cpp)
+## 5. 기둥과 보 설치 [▶](https://github.com/J-HM/Study_KaKao-Blind-Recruitment/blob/master/column_and_beam_installation.cpp)
 
 <br/><br/>
 ## 6. 외벽 점검 [▶](https://github.com/J-HM/Study_KaKao-Blind-Recruitment/blob/master/parenthesis_transformation.cpp)
