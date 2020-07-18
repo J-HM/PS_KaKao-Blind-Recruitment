@@ -39,7 +39,7 @@ vector<int> solution(vector<string> words, vector<string> queries) {
       {
         if (real_query_count == 0)
           match_count++;
-        else if (word.substr(real_query_front_index, real_query_count) == real_query)
+        else if (!word.compare(real_query_front_index, real_query_count, real_query))
           match_count++;
       }
     }
@@ -54,7 +54,7 @@ int main()
   vector<string> queries;
 
   words = {"frodo", "front", "frost", "frozen", "frame", "kakao"};
-  queries = {"???", "?????", "??????", "frost", "pro?"};
+  queries = {"fro??", "????o", "fr???", "fro???", "pro?"};
 
   auto results = solution(words, queries);
 
