@@ -44,7 +44,7 @@ void installPillar(int x, int y)
 void removeBeam(int x, int y)
 {
   beamss[y][x] = 0;
-  if (beamss[y][x + 1] && !isBeampossible(x + 1, y))          // 오른쪽 끝 부분에 있는 보가 조건 불충족
+  if (beamss[y][x + 1] && !isBeampossible(x + 1, y))     // 오른쪽 끝 부분에 있는 보가 조건 불충족
     beamss[y][x] = 1;
   if (beamss[y][x - 1] && !isBeampossible(x - 1, y))     // 왼쪽 끝 부분에 있는 보가 조건 불충족
     beamss[y][x] = 1;
@@ -57,7 +57,7 @@ void removeBeam(int x, int y)
 void removePillar(int x, int y)
 {
   pillarss[y][x] = 0;
-  if (beamss[y + 1][x] && !isBeampossible(x, y + 1))          // 위-오른쪽 부분에 있는 보가 조건 불충족
+  if (beamss[y + 1][x] && !isBeampossible(x, y + 1))         // 위-오른쪽 부분에 있는 보가 조건 불충족
     pillarss[y][x] = 1;
   if (beamss[y + 1][x - 1] && !isBeampossible(x - 1, y + 1)) // 위-왼쪽 부분에 있는 보가 조건 불충족
     pillarss[y][x] = 1;
