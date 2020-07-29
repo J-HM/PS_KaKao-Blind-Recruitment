@@ -8,45 +8,52 @@ int size;
 vector<int> weaks;
 vector<int> dists;
 
-
-int getWeaksDistance(int first_index, int second_index)
+vector<vector<int>> getNewWeaks()
 {
-  if (second_index > first_index)
-    return weaks[second_index] - weaks[first_index];
-  else if (second_index == first_index)
-    return 0;
-  else
-    return size + weaks[second_index] - weaks[first_index];
-}
-
-// int inspection(int weak_index, int dist_index, int remaining_weaks_count)
-// {
-//   if (remaining_weaks_count == 0) 
-//     return 1;
-//   int insepction_size = dists.at(dist_index);
-//   int next_weak_index = weak_index + 1;
-//   while(next_weak_index < weaks.size() + weak_index)
-//   {
-//     next_weak_index++;
-//     int distance = getWeaksDistance(weak_index, next_weak_index);
-//     if (distance < insepction_size)
-//       break;
-//   }
-//   return 1 + inspection(next_weak_index, dist_index, remaining_weaks_count - 1);
-// }
-
-int inspection()
-{
-  
+  vector<vector<int>> new_weakss;
   for (int i = 0; i < weaks.size(); i++)
   {
-  
+    vector<int> new_weaks;
     for (int j = i; j < weaks.size() + i; j++)
     {
-
+      if (j < weaks.size())
+        new_weaks.push_back(weaks[j]);
+      else
+        new_weaks.push_back(weaks[j - weaks.size()] + size);
     }
-
+    new_weakss.push_back(new_weaks);
   }
+  return new_weakss;
+}
+
+bool inspect(vector<int>& new_dists, vector<vector<int>>& new_weakss)
+{
+  do
+  {
+    for (auto new_weaks : new_weakss)
+    {
+      int new_weaks_index = 0;
+      int new_dists_index = 0;
+      int new_weaks_size = new_weaks.size();
+      int new_dists_size = new_dists.size();
+      while(new_weaks_index < new_weaks_size && new_dists_index < new_dists_size)
+      {
+        int current_value = new_weaks[new_weaks_index] + new_dists[new_dists_index];
+        new_dists_index++;
+        while (new_weaks_index < new_weaks_size)
+        {
+          if (new_weaks[new_weaks_index] > current_value)
+            break;
+          else
+            new_weaks_index++;
+        }
+        if (new_weaks_index == new_weaks_size) 
+          return true;
+      }
+    }
+  }
+  while (prev_permutation(new_dists.begin(), new_dists.end()));
+  return false;
 }
 
 int solution(int input_size, vector<int> input_weaks, vector<int> input_dists)
@@ -54,11 +61,15 @@ int solution(int input_size, vector<int> input_weaks, vector<int> input_dists)
   size = input_size;
   weaks = input_weaks;
   dists = input_dists;
-
   sort(dists.begin(), dists.end(), greater<int>()); // Reverse dists
-  
-  int inspection_count = inspection(0, 0, weaks.size());
-  return inspection_count;
+  auto new_weakss = getNewWeaks();
+  for (int i = 1; i < dists.size() + 1; i++)
+  {
+    vector<int> new_dist(dists.begin(), dists.begin() + i);
+    if (inspect(new_dist, new_weakss))
+      return i;
+  }
+  return -1;
 }
 
 int main()
@@ -66,9 +77,9 @@ int main()
   int size;
   vector<int> weaks;
   vector<int> dists;
-  size = 12;
-  weaks = {1, 5, 6, 10};
-  dists = {1, 2, 3, 4};	
+  size = 1;
+  weaks = {0};
+  dists = {1};	
 
   auto result = solution(size, weaks, dists);
   cout << result << endl;
